@@ -8,6 +8,7 @@ const GamePlay = () => {
   const [score, setScore] = useState(0);
   const [selectedNumber, setSelectedNumber] = useState();
   const [currentDice, setCurrentDice] = useState(1);
+  const [error, setError] = useState("")
 
   const generateRandomNumber = (min, max) =>{
     return Math.floor(Math.random() * (max - min) + min);
@@ -17,14 +18,19 @@ const GamePlay = () => {
     const randomNumber = generateRandomNumber (1, 7)
     setCurrentDice(prev => randomNumber);
 
+
+    if (!selectedNumber){
+       setError("You Have Not Selected any Number");
+       return
+      };
+
     if (selectedNumber == randomNumber) {
-      setScore(prev => prev+randomNumber
-        )
+      setScore(prev => prev+randomNumber)
     }else{
       setScore(prev => prev- 2)
     }
 
-    setSelectedNumber(undefined);
+    setSelectedNumber(undefined); // to unselect the number
 
   }
 
@@ -33,6 +39,8 @@ const GamePlay = () => {
     <div className="top_section">
       <TotalScore score={score}/>
       <NumberSelector 
+      error = {error}
+      setError = {setError}
       selectedNumber={selectedNumber}
       setSelectedNumber={setSelectedNumber}  
       />
@@ -40,6 +48,10 @@ const GamePlay = () => {
     <RollDice
       currentDice={currentDice} 
       rollDice={rollDice}/>
+    <div className="btns">
+      <button>Reset</button>
+      <button></button>
+    </div>
     </MainContainer>
   )
 }
